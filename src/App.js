@@ -1,25 +1,29 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+
+import JokeList from './components/JokeList';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [joks, setJoks] = useState([]);
+
+    async function fetchJokesHandler() {
+        const response = await fetch(
+            'https://official-joke-api.appspot.com/random_ten'
+        );
+        const data = await response.json();
+        setJoks(data);
+    }
+
+    return (
+        <React.Fragment>
+            <section>
+                <button onClick={fetchJokesHandler}>Fetch Jokes</button>
+            </section>
+            <section>
+                <JokeList jokes={joks} />
+            </section>
+        </React.Fragment>
+    );
 }
 
 export default App;
